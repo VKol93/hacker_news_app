@@ -12,6 +12,7 @@ import com.onramp.android.takehome.datasource.RemoteDataSource
 import kotlinx.coroutines.launch
 import android.util.Log
 import com.onramp.android.takehome.model.Story
+import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,22 +20,16 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
-        lifecycleScope.launch {
-            try {
-                val topStoriesIDs = RemoteDataSource.retrofitService.getTopStoriesID()
-                val topHundredStories = topStoriesIDs.take(100)
-                val storyList:MutableList<Story> = mutableListOf()
-                for (id in topHundredStories){
-                    val story = RemoteDataSource.retrofitService.getStory(id)
-                    storyList.add(story)
-                }
-                Log.d("_TAG", storyList.toString())
-            }
-            catch (e:Exception){
-                //show error
-                Log.d("_TAG", e.message)
-            }
 
+
+        lifecycleScope.launch {
+            try{
+
+            val topStories = RemoteDataSource.getTopStories()
+
+            } catch(e: Exception){
+
+            }
         }
 
     }

@@ -1,5 +1,6 @@
 package com.onramp.android.takehome.datasource
 
+import android.util.Log
 import com.onramp.android.takehome.model.Story
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -12,7 +13,7 @@ interface ApiHackerNews {
     @GET("item/{id}.json")
     suspend fun getStory(@Path("id") id:Int): Story
 
-    @GET("beststories.json")
+    @GET(" beststories.json")
     suspend fun getTopStories(): List<Story>
 //    {
 //        val result = mutableListOf<Story>()
@@ -32,5 +33,18 @@ object RemoteDataSource {
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl(BASE_URL)
             .build()
-    val retrofitService: ApiHackerNews = retrofit.create(ApiHackerNews::class.java)
+    private val retrofitService: ApiHackerNews = retrofit.create(ApiHackerNews::class.java)
+
+     suspend fun getTopStories():List<Story>{
+         val storyList:MutableList<Story> = mutableListOf()
+         val topStoriesIDs = retrofitService.getTopStoriesID()
+         val topHundredStories = topStoriesIDs.take(100)
+            for (id in topHundredStories){
+                val story = retrofitService.getStory(id)
+                storyList.add(story)
+            }
+            Log.d("_TAG", storyList.toString())
+      return storyList
+
+    }
 }
