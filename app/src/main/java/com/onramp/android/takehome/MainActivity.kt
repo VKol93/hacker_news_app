@@ -10,32 +10,21 @@ import com.onramp.android.takehome.datasource.RemoteDataSource
 import kotlinx.coroutines.launch
 import android.view.View
 import com.onramp.android.takehome.model.StoriesAdapter
+import com.onramp.android.takehome.model.Story
+import com.onramp.android.takehome.ui.TopStoriesPresenter
+import com.onramp.android.takehome.ui.TopStoriesViewContract
 import kotlinx.android.synthetic.main.content_main.*
 import java.lang.Exception
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), TopStoriesViewContract {
+    lateinit var presenter: TopStoriesPresenter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
-
-
-        lifecycleScope.launch {
-            progressBar.visibility =  View.VISIBLE
-            try {
-                val topStories = RemoteDataSource.getTopStories()
-                stories_recycler_view.visibility = View.VISIBLE
-                errorTextView.visibility = View.INVISIBLE
-                stories_recycler_view.adapter = StoriesAdapter(topStories)
-            } catch(e: Exception){
-                stories_recycler_view.visibility = View.INVISIBLE
-                errorTextView.visibility = View.VISIBLE
-                errorTextView.text = e.toString()
-            }
-            progressBar.visibility =  View.INVISIBLE
-        }
-
+        presenter = TopStoriesPresenter(this)
+        presenter.refreshTopStories()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -53,4 +42,22 @@ class MainActivity : AppCompatActivity() {
             true
         } else super.onOptionsItemSelected(item)
     }
+
+    override fun startLoading() {
+        progressBar.visibility =  View.VISIBLE
+    }
+
+    override fun stopLoading() {
+        progressBar.visibility =  View.INVISIBLE
+    }
+
+    override fun displayStoriesToUI(stories: List<Story>) {
+        stories_recycler_view.visibility = View.VISIBLE
+        errorTextView.visibility = View.INVISIBLE
+        stories_recycler_view.adapter = StoriesAdapter(stories)    }
+
+    override fun displayErrorMessage(msg: String) {
+        stories_recycler_view.visibility = View.INVISIBLE
+        errorTextView.visibility = View.VISIBLE
+        errorTextView.text = msg    }
 }
