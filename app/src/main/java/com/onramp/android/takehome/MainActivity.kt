@@ -11,7 +11,9 @@ import androidx.lifecycle.lifecycleScope
 import com.onramp.android.takehome.datasource.RemoteDataSource
 import kotlinx.coroutines.launch
 import android.util.Log
+import com.onramp.android.takehome.model.StoriesAdapter
 import com.onramp.android.takehome.model.Story
+import kotlinx.android.synthetic.main.content_main.*
 import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
@@ -25,8 +27,8 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             try{
 
-            val topStories = RemoteDataSource.getTopStories()
-
+                val topStories = RemoteDataSource.getTopStories()
+                story_recycler_view.adapter = StoriesAdapter(topStories)
             } catch(e: Exception){
 
             }

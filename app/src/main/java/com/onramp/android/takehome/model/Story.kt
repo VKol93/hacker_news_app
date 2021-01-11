@@ -13,6 +13,6 @@ data class Story(
         var time: Long,
         var title: String,
         //var type: String,
-        //var url: String,
+        var url: String,
        // var isBookmarked: Boolean = false
 )
