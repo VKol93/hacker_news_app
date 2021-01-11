@@ -12,19 +12,6 @@ interface ApiHackerNews {
     suspend fun getTopStoriesID(): List<Int>
     @GET("item/{id}.json")
     suspend fun getStory(@Path("id") id:Int): Story
-
-    @GET(" beststories.json")
-    suspend fun getTopStories(): List<Story>
-//    {
-//        val result = mutableListOf<Story>()
-//        val top = getTopStoriesID()
-//        for (id in top){
-//            val story = getStory(id)
-//            result.add(story)
-//        }
-//        return result
-//    }
-
 }
 
 object RemoteDataSource {
@@ -35,16 +22,16 @@ object RemoteDataSource {
             .build()
     private val retrofitService: ApiHackerNews = retrofit.create(ApiHackerNews::class.java)
 
-     suspend fun getTopStories():List<Story>{
-         val storyList:MutableList<Story> = mutableListOf()
-         val topStoriesIDs = retrofitService.getTopStoriesID()
-         val topHundredStories = topStoriesIDs.take(10)
-            for (id in topHundredStories){
+    suspend fun getTopStories():List<Story>{
+        val storyList:MutableList<Story> = mutableListOf()
+        val topStoriesIDs: List<Int> = retrofitService.getTopStoriesID()
+        val topTenStories = topStoriesIDs.take(10)
+            for (id in topTenStories){
                 val story = retrofitService.getStory(id)
                 storyList.add(story)
             }
             Log.d("_TAG", storyList.toString())
-      return storyList
+        return storyList
 
     }
 }

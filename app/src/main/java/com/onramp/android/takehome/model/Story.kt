@@ -14,5 +14,5 @@ data class Story(
         var title: String,
         //var type: String,
         var url: String,
-       // var isBookmarked: Boolean = false
+       var isBookmarked: Boolean = false
 )

@@ -2,17 +2,14 @@ package com.onramp.android.takehome
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import androidx.lifecycle.lifecycleScope
 import com.onramp.android.takehome.datasource.RemoteDataSource
 import kotlinx.coroutines.launch
-import android.util.Log
+import android.view.View
 import com.onramp.android.takehome.model.StoriesAdapter
-import com.onramp.android.takehome.model.Story
 import kotlinx.android.synthetic.main.content_main.*
 import java.lang.Exception
 
@@ -25,13 +22,18 @@ class MainActivity : AppCompatActivity() {
 
 
         lifecycleScope.launch {
-            try{
-
+            progressBar.visibility =  View.VISIBLE
+            try {
                 val topStories = RemoteDataSource.getTopStories()
-                story_recycler_view.adapter = StoriesAdapter(topStories)
+                stories_recycler_view.visibility = View.VISIBLE
+                errorTextView.visibility = View.INVISIBLE
+                stories_recycler_view.adapter = StoriesAdapter(topStories)
             } catch(e: Exception){
-
+                stories_recycler_view.visibility = View.INVISIBLE
+                errorTextView.visibility = View.VISIBLE
+                errorTextView.text = e.toString()
             }
+            progressBar.visibility =  View.INVISIBLE
         }
 
     }
