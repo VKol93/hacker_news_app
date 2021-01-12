@@ -1,63 +1,48 @@
 package com.onramp.android.takehome
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.appcompat.widget.Toolbar
 import android.view.Menu
-import android.view.MenuItem
-import androidx.lifecycle.lifecycleScope
-import com.onramp.android.takehome.datasource.RemoteDataSource
-import kotlinx.coroutines.launch
-import android.view.View
-import com.onramp.android.takehome.model.StoriesAdapter
-import com.onramp.android.takehome.model.Story
-import com.onramp.android.takehome.ui.TopStoriesPresenter
-import com.onramp.android.takehome.ui.TopStoriesViewContract
-import kotlinx.android.synthetic.main.content_main.*
-import java.lang.Exception
+import com.google.android.material.navigation.NavigationView
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 
-class MainActivity : AppCompatActivity(), TopStoriesViewContract {
-    lateinit var presenter: TopStoriesPresenter
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var appBarConfiguration: AppBarConfiguration
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-        presenter = TopStoriesPresenter(this)
-        presenter.refreshTopStories()
+
+        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
+        val navView: NavigationView = findViewById(R.id.nav_view)
+        val navController = findNavController(R.id.nav_host_fragment)
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        appBarConfiguration = AppBarConfiguration(setOf(
+                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow), drawerLayout)
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        navView.setupWithNavController(navController)
+
     }
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
+        menuInflater.inflate(R.menu.main, menu)
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        val id = item.itemId
-        return if (id == R.id.action_settings) {
-            true
-        } else super.onOptionsItemSelected(item)
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.nav_host_fragment)
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
-
-    override fun startLoading() {
-        progressBar.visibility =  View.VISIBLE
-    }
-
-    override fun stopLoading() {
-        progressBar.visibility =  View.INVISIBLE
-    }
-
-    override fun displayStoriesToUI(stories: List<Story>) {
-        stories_recycler_view.visibility = View.VISIBLE
-        errorTextView.visibility = View.INVISIBLE
-        stories_recycler_view.adapter = StoriesAdapter(stories)    }
-
-    override fun displayErrorMessage(msg: String) {
-        stories_recycler_view.visibility = View.INVISIBLE
-        errorTextView.visibility = View.VISIBLE
-        errorTextView.text = msg    }
 }
