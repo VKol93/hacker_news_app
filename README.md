@@ -1,4 +1,37 @@
-# Onramp Android Take Home Project 
+This app is created for users to browse and read top stories from HackerNews. By clicking on bookmark icon user can save it to bookmarks that can be viewed at the side drawer. To read the story user can click on it and it will be opened in preferred browser. Bookmarked stories can be seeing in the top stories list as well as in bookmark list, and  it has red bookmark icon. Bookmarks can be deleted by clicking on red icon. The refresh button in the top bar refreshes list to display new stories. Subscribe menu was created to allow user subscribe to the stories by keyword. User will be notified
+when new story title will match with keyword(service is not fully completed).
+
+This project  has 2 activity where one of them is used for SplashScreen(with picture) and another one contains all fragment
+
+The main theme of the app has no action bar (“Theme.AppCompat.Light.NoActionBar”) therefore splash screen doesn’t have action bar. The main activity has AppBarLayout
+
+This app has 3 fragments: TopStoriesFragment displays list of top stories posted, BookmarkFragment displays saved stories and ServiceFragment displays screen where user can type a keyword to subscribe to all stories when title matches with keyword.
+
+This project is built using MVP architecture. Each fragment has presenter, and presenters contain functions that are not related to UI. Fragments(View) have code that displays information in UI components on the screen and inform presenter about user’s input.
+
+Each View is hidden from Presenter by interface to make View and Presenter independent from each other. The pattern observer is leveraged in StoriesAdapter to register clicks on recycler view items and notify about this action to TopStoriesFragment and BookmarksFragment. This pattern is used to avoid tight interconnections between classes and let each class has minimum responsibilities.
+
+The layer model has classes that responsible for data structure(data class Story) and also has data source (remote and local)
+
+To implement REST API is used retrofit library, for a-synchronization are used coroutines. API source wasn’t providing list of stories only list of ids’, therefore fun getTopStories  is created to get list of stories.
+
+The Room library is used to work with SQLite that allows user to save stories in local data base; coroutines are used for a-synchronization.
+
+UI components used: ImageButton(used to bookmark stories), textView(displays text from server in multiple fragment), progressBar( used while waiting for servers response), recycler view (used to display list of stories in BookmarFragment and TopStoriesFragment), ImageView(used in SplashScreen and main header), custom view is used as divider to divide recyclerview items, editText(used in SubscribeFragment for user input).
+
+Service is implemented as foreground service and performs background query to server every hour to receive latest list of stories. It checks whether list contains keyword that user input in SubscribeFragment. If title of the news contains keyword then user will receive notification about it. Foreground service is used to keep it running and avoid Android operation system to destroy it.
+
+All screenshots are provided in screenshots directory in the root of project.
+
+
+
+
+
+
+
+
+
+# Onramp Android Take Home Project
 
 ## Overview 🤖
 

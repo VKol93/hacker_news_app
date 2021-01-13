@@ -25,7 +25,7 @@ object RemoteDataSource {
     suspend fun getTopStories():List<Story>{
         val storyList:MutableList<Story> = mutableListOf()
         val topStoriesIDs: List<Int> = retrofitService.getTopStoriesID()
-        val topTenStories = topStoriesIDs.take(10)
+        val topTenStories = topStoriesIDs.take(20)
             for (id in topTenStories){
                 val story = retrofitService.getStory(id)
                 storyList.add(story)

@@ -8,14 +8,10 @@ import com.onramp.android.takehome.model.Story
 
 @Dao
 interface StoryDAO{
-    @Query("SELECT * FROM StoriesList")
-    fun getStories(): List<Story>
-
     @Query("SELECT *FROM StoriesList")
-    fun getBookmarked(): List<Story>
-
+    suspend fun getBookmarked(): List<Story>
     @Insert
-    fun insertStory(story: Story)
+    suspend fun insertStory(story: Story)
     @Delete
-    fun deleteStory(story: Story)
+    suspend  fun deleteStory(story: Story)
 }

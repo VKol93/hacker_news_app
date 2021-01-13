@@ -5,6 +5,6 @@ import androidx.room.RoomDatabase
 import com.onramp.android.takehome.model.Story
 
 @Database(entities = [Story::class],version = 1)
-abstract class StoryDB : RoomDatabase(){
+abstract class StoriesDB : RoomDatabase(){
     abstract fun storiesDAO(): StoryDAO
 }
