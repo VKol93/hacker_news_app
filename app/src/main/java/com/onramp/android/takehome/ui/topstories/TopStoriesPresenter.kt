@@ -26,10 +26,9 @@ class TopStoriesPresenter(val view: TopStoriesViewContract, val db: StoriesDB) {
                 for(topStory in topStories)
                     if(bookmarkedStories.find { it.id == topStory.id} != null)
                         topStory.isBookmarked = true
-
                 view.displayStoriesToUI(topStories)
             } catch(e: Exception){
-                view.displayErrorMessage(e.toString())
+                view.displayErrorMessage(e.message.toString())
             }
             view.stopLoading()
         }

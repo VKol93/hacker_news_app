@@ -40,7 +40,6 @@ class BookmarksPresenter(val view: BookmarksViewContract, val db: StoriesDB) {
             refreshBookmarks()
         }
     }
-
     fun onBookmarkButtonClick(story:Story){
         if(story.isBookmarked)
             deleteBookmark(story)

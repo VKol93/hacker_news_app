@@ -32,7 +32,6 @@ class StoriesAdapter(val stories: List<Story>, val listener: Listener):RecyclerV
     override fun getItemCount(): Int = stories.size
 }
 
-
 class StoryViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
     fun bind(storyData: Story){
         itemView.setOnClickListener{

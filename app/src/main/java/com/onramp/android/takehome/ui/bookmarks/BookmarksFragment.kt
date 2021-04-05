@@ -21,23 +21,17 @@ class BookmarksFragment : Fragment(), BookmarksViewContract {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-
         val root = inflater.inflate(R.layout.fragment_bookmarks, container, false)
         return root
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val db = (activity?.application as HackerNewsApp).db
         presenter = BookmarksPresenter(this, db)
         presenter.refreshBookmarks()
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         val id = item.itemId
         return if (id == R.id.action_refresh) {
             true
@@ -58,7 +52,6 @@ class BookmarksFragment : Fragment(), BookmarksViewContract {
         val listener = object : StoriesAdapter.Listener{
             override fun onBookmarkButtonClick(story: Story) {
                 presenter.onBookmarkButtonClick(story)
-
             }
         }
         val adapter = StoriesAdapter(stories, listener)

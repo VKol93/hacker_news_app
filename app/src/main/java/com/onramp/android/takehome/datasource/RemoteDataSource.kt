@@ -10,8 +10,9 @@ import retrofit2.http.Path
 interface ApiHackerNews {
     @GET("topstories.json")
     suspend fun getTopStoriesID(): List<Int>
+
     @GET("item/{id}.json")
-    suspend fun getStory(@Path("id") id:Int): Story
+    suspend fun getStory(@Path("id") id: Int): Story
 }
 
 object RemoteDataSource {
@@ -22,16 +23,15 @@ object RemoteDataSource {
             .build()
     private val retrofitService: ApiHackerNews = retrofit.create(ApiHackerNews::class.java)
 
-    suspend fun getTopStories():List<Story>{
-        val storyList:MutableList<Story> = mutableListOf()
+    suspend fun getTopStories(): List<Story> {
+        val storyList: MutableList<Story> = mutableListOf()
         val topStoriesIDs: List<Int> = retrofitService.getTopStoriesID()
-        val topTenStories = topStoriesIDs.take(20)
-            for (id in topTenStories){
-                val story = retrofitService.getStory(id)
-                storyList.add(story)
-            }
-            Log.d("_TAG", storyList.toString())
+        val topTwentyStories = topStoriesIDs.take(20)
+        for (id in topTwentyStories) {
+            val story = retrofitService.getStory(id)
+            storyList.add(story)
+        }
+        Log.d("_TAG", storyList.toString())
         return storyList
-
     }
 }

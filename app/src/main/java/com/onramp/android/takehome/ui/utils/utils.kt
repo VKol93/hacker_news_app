@@ -1,7 +1,6 @@
 package com.onramp.android.takehome.ui.utils
 
 import java.text.SimpleDateFormat
-import java.time.LocalDate
 import java.util.*
 
 fun longToDateTime(long: Long): String{

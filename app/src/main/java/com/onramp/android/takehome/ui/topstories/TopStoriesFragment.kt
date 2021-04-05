@@ -29,7 +29,6 @@ class TopStoriesFragment : Fragment(), TopStoriesViewContract {
         val db = (activity?.application as HackerNewsApp).db
         presenter = TopStoriesPresenter(this, db)
         presenter.refreshTopStories()
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -38,16 +37,13 @@ class TopStoriesFragment : Fragment(), TopStoriesViewContract {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        val id = item.itemId
-        when(id){
-            R.id.action_refresh -> presenter.refreshTopStories()
+        when(item.itemId){
+            R.id.action_refresh -> {
+                presenter.refreshTopStories()
+                return true
+            }
         }
-        return if (id == R.id.action_refresh) {
-            true
-        } else super.onOptionsItemSelected(item)
+        return super.onOptionsItemSelected(item)
     }
 
     override fun startLoading() {
@@ -64,7 +60,6 @@ class TopStoriesFragment : Fragment(), TopStoriesViewContract {
         val listener = object : StoriesAdapter.Listener{
             override fun onBookmarkButtonClick(story: Story) {
                 presenter.onBookmarkButtonClick(story)
-
             }
         }
         val adapter = StoriesAdapter(stories, listener)
